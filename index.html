@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppFactory - Ciptakan Aplikasi Web Anda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #7C3AED;
+            --accent: #06B6D4;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --lighter: #FFFFFF;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--lighter);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* APP CREATOR */
+        .app-creator {
+            padding: 4rem 0;
+            background: var(--lighter);
+        }
+
+        .creator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* CONFIGURATION PANEL */
+        .config-panel {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .config-group {
+            margin-bottom: 2rem;
+        }
+
+        .config-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .app-type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .app-type-card {
+            background: var(--lighter);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .app-type-card:hover,
+        .app-type-card.active {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .app-type-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* PREVIEW PANEL */
+        .preview-panel {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-height: 500px;
+        }
+
+        .preview-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .preview-content {
+            padding: 2rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .feature-list li:before {
+            content: "✓ ";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* TEMPLATES */
+        .templates-section {
+            padding: 4rem 0;
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .template-card {
+            background: var(--lighter);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+        }
+
+        .template-preview {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .template-info {
+            padding: 1.5rem;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* GENERATE BUTTON */
+        .generate-section {
+            text-align: center;
+            padding: 3rem 0;
+            background: var(--lighter);
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">AppFactory</div>
+                <button class="btn btn-primary">Buat Aplikasi</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>Ciptakan Aplikasi Web dalam 60 Detik</h1>
+            <p>Pilih template, customisasi, dan generate aplikasi web siap pakai</p>
+            <button class="btn btn-primary" style="background: white; color: var(--primary);">
+                Mulai Membuat
+            </button>
+        </div>
+    </section>
+
+    <!-- APP CREATOR -->
+    <section class="app-creator">
+        <div class="container">
+            <div class="creator-container">
+                <!-- CONFIGURATION -->
+                <div class="config-panel">
+                    <h2 style="margin-bottom: 2rem;">Konfigurasi Aplikasi</h2>
+                    
+                    <div class="config-group">
+                        <label class="config-label">Nama Aplikasi</label>
+                        <input type="text" class="config-input" id="appName" placeholder="My Awesome App" value="My Task Manager">
+                    </div>
+
+                    <div class="config-group">
+                        <label class="config-label">Tipe Aplikasi</label>
+                        <div class="app-type-grid">
+                            <div class="app-type-card active" data-type="todo">
+                                <div class="app-type-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <h4>Task Manager</h4>
+                                <p>Kelola tugas dan proyek</p>
+                            </div>
+                            <div class="app-type-card" data-type="notes">
+                                <div class="app-type-icon">
+                                    <i class="fas fa-sticky-note"></i>
+                                </div>
+                                <h4>Notes App</h4>
+                                <p>Aplikasi catatan pribadi</p>
+                            </div>
+                            <div class="app-type-card" data-type="finance">
+                                <div class="app-type-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <h4>Finance Tracker</h4>
+                                <p>Kelola keuangan pribadi</p>
+                            </div>
+                            <div class="app-type-card" data-type="blog">
+                                <div class="app-type-icon">
+                                    <i class="fas fa-blog"></i>
+                                </div>
+                                <h4>Blog Platform</h4>
+                                <p>Platform blogging sederhana</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <label class="config-label">Warna Theme</label>
+                        <input type="color" class="config-input" id="themeColor" value="#8B5CF6">
+                    </div>
+
+                    <div class="config-group">
+                        <label class="config-label">Fitur yang Diinginkan</label>
+                        <div style="margin-top: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">
+                                <input type="checkbox" id="featureDarkMode" checked> Dark Mode
+                            </label>
+                            <label style="display: block; margin-bottom: 0.5rem;">
+                                <input type="checkbox" id="featureLocalStorage" checked> Local Storage
+                            </label>
+                            <label style="display: block; margin-bottom: 0.5rem;">
+                                <input type="checkbox" id="featureResponsive" checked> Responsive Design
+                            </label>
+                            <label style="display: block; margin-bottom: 0.5rem;">
+                                <input type="checkbox" id="featureExport"> Export Data
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREVIEW -->
+                <div class="preview-panel">
+                    <h2 style="margin-bottom: 2rem;">Preview Aplikasi</h2>
+                    <div class="preview-container">
+                        <div class="preview-header">
+                            <h3 id="previewAppName">My Task Manager</h3>
+                        </div>
+                        <div class="preview-content">
+                            <div id="previewContent">
+                                <!-- Dynamic preview based on app type -->
+                                <h4>Task Manager App</h4>
+                                <p>Aplikasi untuk mengelola tugas harian Anda</p>
+                                
+                                <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                    <input type="text" placeholder="Tambah task baru..." style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px;">
+                                    <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 0.5rem;">Tambah</button>
+                                </div>
+
+                                <ul class="feature-list">
+                                    <li>Tambahkan task baru</li>
+                                    <li>Edit dan hapus task</li>
+                                    <li>Mark task sebagai selesai</li>
+                                    <li>Data tersimpan di browser</li>
+                                    <li>Dark/Light mode</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GENERATE SECTION -->
+    <section class="generate-section">
+        <div class="container">
+            <h2 style="margin-bottom: 1rem;">Siap Ciptakan Aplikasi Anda?</h2>
+            <p style="margin-bottom: 2rem; color: #6B7280;">Klik generate untuk mendownload aplikasi web siap pakai</p>
+            <button class="btn btn-primary btn-large" onclick="generateApplication()">
+                <i class="fas fa-download"></i> Generate Aplikasi
+            </button>
+        </div>
+    </section>
+
+    <!-- TEMPLATES -->
+    <section class="templates-section">
+        <div class="container">
+            <h2 class="section-title">Template Aplikasi</h2>
+            <div class="templates-grid">
+                <div class="template-card" onclick="loadTemplate('todo')">
+                    <div class="template-preview">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="template-info">
+                        <h3>Task Manager</h3>
+                        <p>Aplikasi manajemen tugas dengan fitur CRUD lengkap</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="loadTemplate('notes')">
+                    <div class="template-preview">
+                        <i class="fas fa-sticky-note"></i>
+                    </div>
+                    <div class="template-info">
+                        <h3>Notes App</h3>
+                        <p>Aplikasi catatan dengan rich text editor</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="loadTemplate('finance')">
+                    <div class="template-preview">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="template-info">
+                        <h3>Finance Tracker</h3>
+                        <p>Lacak pemasukan dan pengeluaran keuangan</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="loadTemplate('blog')">
+                    <div class="template-preview">
+                        <i class="fas fa-blog"></i>
+                    </div>
+                    <div class="template-info">
+                        <h3>Blog Platform</h3>
+                        <p>Platform blogging dengan sistem komentar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AppFactory. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // CURRENT APP CONFIG
+        let currentAppConfig = {
+            name: "My Task Manager",
+            type: "todo",
+            color: "#8B5CF6",
+            features: {
+                darkMode: true,
+                localStorage: true,
+                responsive: true,
+                export: false
+            }
+        };
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // App name change
+            document.getElementById('appName').addEventListener('input', function(e) {
+                currentAppConfig.name = e.target.value;
+                document.getElementById('previewAppName').textContent = e.target.value;
+            });
+
+            // Theme color change
+            document.getElementById('themeColor').addEventListener('input', function(e) {
+                currentAppConfig.color = e.target.value;
+                document.documentElement.style.setProperty('--primary', e.target.value);
+                document.querySelector('.preview-header').style.background = e.target.value;
+            });
+
+            // App type selection
+            document.querySelectorAll('.app-type-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.app-type-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    currentAppConfig.type = this.getAttribute('data-type');
+                    updatePreview();
+                });
+            });
+
+            // Feature toggles
+            document.getElementById('featureDarkMode').addEventListener('change', function(e) {
+                currentAppConfig.features.darkMode = e.target.checked;
+            });
+            document.getElementById('featureLocalStorage').addEventListener('change', function(e) {
+                currentAppConfig.features.localStorage = e.target.checked;
+            });
+            document.getElementById('featureResponsive').addEventListener('change', function(e) {
+                currentAppConfig.features.responsive = e.target.checked;
+            });
+            document.getElementById('featureExport').addEventListener('change', function(e) {
+                currentAppConfig.features.export = e.target.checked;
+            });
+        }
+
+        function updatePreview() {
+            const previewContent = document.getElementById('previewContent');
+            
+            switch(currentAppConfig.type) {
+                case 'todo':
+                    previewContent.innerHTML = `
+                        <h4>Task Manager App</h4>
+                        <p>Aplikasi untuk mengelola tugas harian Anda</p>
+                        
+                        <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <input type="text" placeholder="Tambah task baru..." style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px;">
+                            <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 0.5rem;">Tambah</button>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li>Tambahkan task baru</li>
+                            <li>Edit dan hapus task</li>
+                            <li>Mark task sebagai selesai</li>
+                            <li>Data tersimpan di browser</li>
+                            <li>Dark/Light mode</li>
+                        </ul>
+                    `;
+                    break;
+
+                case 'notes':
+                    previewContent.innerHTML = `
+                        <h4>Notes App</h4>
+                        <p>Aplikasi catatan pribadi dengan fitur lengkap</p>
+                        
+                        <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <textarea placeholder="Tulis catatan Anda..." style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px; height: 100px;"></textarea>
+                            <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 0.5rem;">Simpan</button>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li>Buat dan edit catatan</li>
+                            <li>Rich text editor</li>
+                            <li>Kategori dan tags</li>
+                            <li>Pencarian catatan</li>
+                            <li>Backup data</li>
+                        </ul>
+                    `;
+                    break;
+
+                case 'finance':
+                    previewContent.innerHTML = `
+                        <h4>Finance Tracker</h4>
+                        <p>Kelola keuangan pribadi dengan mudah</p>
+                        
+                        <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <select style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px; margin-bottom: 0.5rem;">
+                                <option>Pemasukan</option>
+                                <option>Pengeluaran</option>
+                            </select>
+                            <input type="number" placeholder="Jumlah" style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px;">
+                            <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 0.5rem;">Tambah</button>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li>Track pemasukan & pengeluaran</li>
+                            <li>Kategori transaksi</li>
+                            <li>Laporan bulanan</li>
+                            <li>Chart visualisasi</li>
+                            <li>Export ke Excel</li>
+                        </ul>
+                    `;
+                    break;
+
+                case 'blog':
+                    previewContent.innerHTML = `
+                        <h4>Blog Platform</h4>
+                        <p>Platform blogging modern dan responsif</p>
+                        
+                        <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <input type="text" placeholder="Judul artikel..." style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px; margin-bottom: 0.5rem;">
+                            <textarea placeholder="Konten artikel..." style="width: 100%; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 4px; height: 100px;"></textarea>
+                            <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 0.5rem;">Publish</button>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li>Tulis dan publish artikel</li>
+                            <li>Sistem kategori</li>
+                            <li>Komentar pembaca</li>
+                            <li>SEO optimized</li>
+                            <li>Responsive design</li>
+                        </ul>
+                    `;
+                    break;
+            }
+        }
+
+        function loadTemplate(templateType) {
+            document.querySelectorAll('.app-type-card').forEach(card => {
+                card.classList.remove('active');
+                if (card.getAttribute('data-type') === templateType) {
+                    card.classList.add('active');
+                }
+            });
+            
+            currentAppConfig.type = templateType;
+            updatePreview();
+        }
+
+        // GENERATE THE ACTUAL APPLICATION
+        function generateApplication() {
+            const appName = currentAppConfig.name;
+            const appType = currentAppConfig.type;
+            const themeColor = currentAppConfig.color;
+            
+            // Generate the complete HTML application
+            const generatedApp = generateCompleteApp(currentAppConfig);
+            
+            // Create downloadable file
+            const blob = new Blob([generatedApp], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${appName.replace(/\s+/g, '-').toLowerCase()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`🎉 Aplikasi "${appName}" berhasil dibuat!\nFile sudah terdownload dan siap digunakan.`);
+        }
+
+        function generateCompleteApp(config) {
+            // This function generates a complete, functional web application
+            // based on the user's configuration
+            return `
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${config.name}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: ${config.color};
+            --primary-dark: ${adjustColor(config.color, -20)};
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --dark: #1f2937;
+            --text: #374151;
+        }
+
+        ${config.features.darkMode ? `
+        [data-theme="dark"] {
+            --light: #1f2937;
+            --lighter: #374151;
+            --dark: #f9fafb;
+            --text: #f3f4f6;
+        }
+        ` : ''}
+
+        body {
+            background: var(--light);
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .app-header {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        ${generateAppSpecificCSS(config.type, config.features)}
+
+        ${config.features.responsive ? `
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+        ` : ''}
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <h1>${config.name}</h1>
+        <p>Aplikasi dibuat dengan AppFactory</p>
+    </div>
+
+    <div class="container">
+        ${generateAppContent(config.type, config.features)}
+    </div>
+
+    <script>
+        ${generateAppJavaScript(config.type, config.features)}
+    </script>
+</body>
+</html>`;
+        }
+
+        function generateAppSpecificCSS(appType, features) {
+            switch(appType) {
+                case 'todo':
+                    return `
+                        .task-input {
+                            width: 100%;
+                            padding: 1rem;
+                            border: 2px solid #e5e7eb;
+                            border-radius: 8px;
+                            margin-bottom: 1rem;
+                        }
+                        .task-list {
+                            list-style: none;
+                        }
+                        .task-item {
+                            background: var(--lighter);
+                            padding: 1rem;
+                            margin: 0.5rem 0;
+                            border-radius: 8px;
+                            border-left: 4px solid var(--primary);
+                        }
+                        .task-completed {
+                            opacity: 0.6;
+                            text-decoration: line-through;
+                        }
+                    `;
+                case 'notes':
+                    return `
+                        .note-editor {
+                            background: var(--lighter);
+                            padding: 1.5rem;
+                            border-radius: 8px;
+                            margin-bottom: 2rem;
+                        }
+                        .note-input {
+                            width: 100%;
+                            padding: 1rem;
+                            border: 2px solid #e5e7eb;
+                            border-radius: 8px;
+                            margin-bottom: 1rem;
+                            min-height: 150px;
+                        }
+                        .notes-grid {
+                            display: grid;
+                            gap: 1rem;
+                        }
+                        .note-card {
+                            background: var(--lighter);
+                            padding: 1rem;
+                            border-radius: 8px;
+                            border: 1px solid #e5e7eb;
+                        }
+                    `;
+                default:
+                    return '';
+            }
+        }
+
+        function generateAppContent(appType, features) {
+            switch(appType) {
+                case 'todo':
+                    return `
+                        <div class="task-input-section">
+                            <input type="text" class="task-input" placeholder="Tambah task baru..." id="newTask">
+                            <button onclick="addTask()" style="background: var(--primary); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer;">Tambah Task</button>
+                        </div>
+                        <ul class="task-list" id="taskList"></ul>
+                    `;
+                case 'notes':
+                    return `
+                        <div class="note-editor">
+                            <input type="text" placeholder="Judul catatan..." id="noteTitle" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem;">
+                            <textarea class="note-input" placeholder="Tulis catatan Anda..." id="noteContent"></textarea>
+                            <button onclick="saveNote()" style="background: var(--primary); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer;">Simpan Catatan</button>
+                        </div>
+                        <div class="notes-grid" id="notesGrid"></div>
+                    `;
+                default:
+                    return '<p>Aplikasi sedang dalam pengembangan...</p>';
+            }
+        }
+
+        function generateAppJavaScript(appType, features) {
+            switch(appType) {
+                case 'todo':
+                    return `
+                        let tasks = ${features.localStorage ? 'JSON.parse(localStorage.getItem("tasks")) || []' : '[]'};
+                        
+                        function renderTasks() {
+                            const taskList = document.getElementById('taskList');
+                            taskList.innerHTML = '';
+                            
+                            tasks.forEach((task, index) => {
+                                const li = document.createElement('li');
+                                li.className = 'task-item' + (task.completed ? ' task-completed' : '');
+                                li.innerHTML = \\
+                                    \`<span onclick="toggleTask(\${index})" style="cursor: pointer;">\${task.text}</span>
+                                     <button onclick="deleteTask(\${index})" style="background: #ef4444; color: white; border: none; padding: 0.5rem; border-radius: 4px; margin-left: 1rem;">Hapus</button>\`;
+                                taskList.appendChild(li);
+                            });
+                            
+                            ${features.localStorage ? 'localStorage.setItem("tasks", JSON.stringify(tasks));' : ''}
+                        }
+                        
+                        function addTask() {
+                            const input = document.getElementById('newTask');
+                            const text = input.value.trim();
+                            
+                            if (text) {
+                                tasks.push({ text: text, completed: false });
+                                input.value = '';
+                                renderTasks();
+                            }
+                        }
+                        
+                        function toggleTask(index) {
+                            tasks[index].completed = !tasks[index].completed;
+                            renderTasks();
+                        }
+                        
+                        function deleteTask(index) {
+                            tasks.splice(index, 1);
+                            renderTasks();
+                        }
+                        
+                        // Initialize
+                        renderTasks();
+                        document.getElementById('newTask').addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') addTask();
+                        });
+                    `;
+                case 'notes':
+                    return `
+                        let notes = ${features.localStorage ? 'JSON.parse(localStorage.getItem("notes")) || []' : '[]'};
+                        
+                        function renderNotes() {
+                            const notesGrid = document.getElementById('notesGrid');
+                            notesGrid.innerHTML = '';
+                            
+                            notes.forEach((note, index) => {
+                                const noteCard = document.createElement('div');
+                                noteCard.className = 'note-card';
+                                noteCard.innerHTML = \\
+                                    \`<h3>\${note.title}</h3>
+                                     <p>\${note.content}</p>
+                                     <button onclick="deleteNote(\${index})" style="background: #ef4444; color: white; border: none; padding: 0.5rem; border-radius: 4px;">Hapus</button>\`;
+                                notesGrid.appendChild(noteCard);
+                            });
+                            
+                            ${features.localStorage ? 'localStorage.setItem("notes", JSON.stringify(notes));' : ''}
+                        }
+                        
+                        function saveNote() {
+                            const title = document.getElementById('noteTitle').value.trim();
+                            const content = document.getElementById('noteContent').value.trim();
+                            
+                            if (title && content) {
+                                notes.push({ title: title, content: content, date: new Date().toLocaleDateString() });
+                                document.getElementById('noteTitle').value = '';
+                                document.getElementById('noteContent').value = '';
+                                renderNotes();
+                            }
+                        }
+                        
+                        function deleteNote(index) {
+                            notes.splice(index, 1);
+                            renderNotes();
+                        }
+                        
+                        // Initialize
+                        renderNotes();
+                    `;
+                default:
+                    return 'console.log("Aplikasi siap digunakan!");';
+            }
+        }
+
+        function adjustColor(color, amount) {
+            // Simple color adjustment function
+            return '#' + color.replace(/^#/, '').replace(/../g, color => 
+                ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2)
+            );
+        }
+    </script>
+</body>
+</html>
